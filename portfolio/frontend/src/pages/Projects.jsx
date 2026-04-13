@@ -1,3 +1,6 @@
+
+import Navbar from "./Navbar";
+
 function Projects() {
   const projects = [
     { title: "Portfolio Website", desc: "React + Tailwind portfolio project." },
@@ -6,7 +9,11 @@ function Projects() {
   ];
 
   return (
-    <div>
+
+
+    <>
+      <Navbar />
+          <div>
       <h1 className="text-4xl font-bold mb-6">My Projects</h1>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -18,6 +25,8 @@ function Projects() {
         ))}
       </div>
     </div>
+    </>
+
   );
 }
 

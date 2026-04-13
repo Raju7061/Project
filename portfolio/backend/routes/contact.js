@@ -13,11 +13,9 @@ router.post("/", async (req, res) => {
 
     res.status(200).json({ success: true, data: result.rows[0] });
   } catch (err) {
-    console.error(err);
+    console.error("CONTACT ERROR:", err);
     res.status(500).json({ error: "Database error" });
   }
 });
 
 module.exports = router;
-
-
