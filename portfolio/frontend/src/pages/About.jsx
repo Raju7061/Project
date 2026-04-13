@@ -1,6 +1,12 @@
+
+import Navbar from "./Navbar";
+
 function About() {
   return (
-    <div className="space-y-6">
+
+<>
+      <Navbar />
+          <div className="space-y-6">
       <h1 className="text-4xl font-bold mb-4">About Me</h1>
 
       <p className="text-lg opacity-90 leading-relaxed">
@@ -21,6 +27,7 @@ function About() {
         </ul>
       </div>
     </div>
+    </>
   );
 }
 

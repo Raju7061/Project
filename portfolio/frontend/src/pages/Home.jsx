@@ -1,6 +1,11 @@
+import Navbar from "./Navbar";
+
 function Home() {
   return (
-    <div className="text-center py-20">
+
+<>
+      <Navbar />
+          <div className="text-center py-20">
       <h1 className="text-5xl font-bold mb-4">
         Hi, I'm <span className="text-cyan-400">Raju</span>
       </h1>
@@ -17,6 +22,7 @@ function Home() {
         Download Resume
       </a>
     </div>
+    </>
   );
 }
 

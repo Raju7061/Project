@@ -1,3 +1,4 @@
+import Navbar from "./Navbar";
 import { useState } from "react";
 import axios from "axios";
 
@@ -16,7 +17,12 @@ function Contact() {
 
   return (
 
-<div className="max-w-lg mx-auto bg-white/10 p-8 rounded-2xl shadow-xl mt-8">
+
+
+
+    <>
+      <Navbar />
+      <div className="max-w-lg mx-auto bg-white/10 p-8 rounded-2xl shadow-xl mt-8">
   <h1 className="text-3xl font-bold mb-6 text-center">Contact Me</h1>
 
   <form onSubmit={handleSubmit} className="space-y-4">
@@ -44,6 +50,7 @@ function Contact() {
     </button>
   </form>
 </div>
+    </>
 
   );
 }
