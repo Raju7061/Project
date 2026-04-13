@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portfolio-backend
+  template:
+    metadata:
+      labels:
+        app: portfolio-backend
+    spec:
+      containers:
+        - name: backend
+          image: 2024dock/portfolio-backend:1.5
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_HOST
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_USER
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_NAME
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_PORT
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: DB_PASSWORD
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 20
