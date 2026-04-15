@@ -10,48 +10,60 @@ function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   await axios.post("http://localhost:5000/api/contact", form);
-
-    alert("Message Sent!");
+    try {
+      // CORRECT: Relative path use karein, localhost nahi
+      const response = await axios.post("/api/contact", form);
+      
+      if (response.status === 200 || response.status === 201) {
+        alert("Message Sent Successfully!");
+        setForm({ name: "", email: "", message: "" }); // Form reset
+      }
+    } catch (err) {
+      console.error("Submission Error:", err);
+      // Agar error aaye toh detail check karein
+      alert(err.response?.data?.error || "Failed to connect to server");
+    }
   };
 
   return (
-
-
-
-
     <>
       <Navbar />
       <div className="max-w-lg mx-auto bg-white/10 p-8 rounded-2xl shadow-xl mt-8">
-  <h1 className="text-3xl font-bold mb-6 text-center">Contact Me</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-white">Contact Me</h1>
 
-  <form onSubmit={handleSubmit} className="space-y-4">
-    <input
-      className="w-full p-3 bg-white/20 rounded-lg outline-none"
-      placeholder="Name"
-      name="name"
-      onChange={handleChange}
-    />
-    <input
-      className="w-full p-3 bg-white/20 rounded-lg outline-none"
-      placeholder="Email"
-      name="email"
-      onChange={handleChange}
-    />
-    <textarea
-      className="w-full p-3 bg-white/20 rounded-lg outline-none"
-      placeholder="Message"
-      name="message"
-      rows="4"
-      onChange={handleChange}
-    />
-    <button className="w-full bg-cyan-500 p-3 rounded-lg text-black font-bold hover:bg-cyan-400 transition">
-      Send Message
-    </button>
-  </form>
-</div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            className="w-full p-3 bg-white/20 rounded-lg outline-none text-white border border-transparent focus:border-cyan-500"
+            placeholder="Name"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
+          <input
+            className="w-full p-3 bg-white/20 rounded-lg outline-none text-white border border-transparent focus:border-cyan-500"
+            placeholder="Email"
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+          <textarea
+            className="w-full p-3 bg-white/20 rounded-lg outline-none text-white border border-transparent focus:border-cyan-500"
+            placeholder="Message"
+            name="message"
+            rows="4"
+            value={form.message}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit" className="w-full bg-cyan-500 p-3 rounded-lg text-black font-bold hover:bg-cyan-400 transition shadow-lg">
+            Send Message
+          </button>
+        </form>
+      </div>
     </>
-
   );
 }
 
