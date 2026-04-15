@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Kyunki ab hum pods use nahi kar rahe, isliye pura address dena hoga
-const API_BASE = "http://localhost:5000/api/auth"; 
+// Kyunki ab hum pods use  kar rahe, isliye  ye address dena hoga
+// u
+const API_BASE = "/api/auth" ;  
+
+//const API_BASE = "http://localhost:5000/api/auth";   local pe chalane ke lie use this mins 
 
 function Login() {
   const navigate = useNavigate();

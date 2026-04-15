@@ -2,6 +2,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: portfolio-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    # Hum rewrite-target ko hata rahe hain taaki poora path (/api/...) backend tak jaye
+    # Isse backend ko wahi path milega jo aapne server.js me define kiya hai
 spec:
   tls:
     - hosts:
@@ -15,7 +19,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: portfolio-backend-service
+                name: backend-service
                 port:
                   number: 5000
 
@@ -23,7 +27,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: portfolio-backend-service
+                name: backend-service
                 port:
                   number: 5000
 
