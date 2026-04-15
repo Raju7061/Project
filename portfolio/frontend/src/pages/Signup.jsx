@@ -21,7 +21,8 @@ function Signup() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      // FIX: Localhost hata diya, ab Ingress ise backend pod tak le jayega
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -39,48 +40,51 @@ function Signup() {
       alert("Account created successfully");
       navigate("/");
     } catch (err) {
-      console.error(err);
-      alert("Server error");
+      console.error("Signup Error:", err);
+      alert("Server error. Please check if backend is running.");
     }
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-black text-white">
-      <form onSubmit={handleSignup} className="bg-gray-800 p-6 rounded w-80">
-        <h2 className="text-2xl mb-4">Sign Up</h2>
+      <form onSubmit={handleSignup} className="bg-gray-800 p-8 rounded-xl w-96 shadow-2xl">
+        <h2 className="text-3xl font-bold mb-6 text-center text-green-400">Sign Up</h2>
 
         <input
           type="text"
           name="username"
           placeholder="Username"
-          className="w-full p-2 mb-3 text-black rounded"
+          className="w-full p-3 mb-4 text-black rounded outline-none focus:ring-2 focus:ring-green-500"
           onChange={handleChange}
+          required
         />
 
         <input
           type="email"
           name="email"
           placeholder="Email"
-          className="w-full p-2 mb-3 text-black rounded"
+          className="w-full p-3 mb-4 text-black rounded outline-none focus:ring-2 focus:ring-green-500"
           onChange={handleChange}
+          required
         />
 
         <input
           type="password"
           name="password"
           placeholder="Password"
-          className="w-full p-2 mb-4 text-black rounded"
+          className="w-full p-3 mb-6 text-black rounded outline-none focus:ring-2 focus:ring-green-500"
           onChange={handleChange}
+          required
         />
 
-        <button className="w-full bg-green-500 py-2 rounded">
+        <button className="w-full bg-green-500 hover:bg-green-600 transition-colors py-3 rounded-lg font-bold text-lg">
           Sign Up
         </button>
 
-        <p className="text-sm mt-3 text-center">
+        <p className="text-sm mt-4 text-center">
           Already have an account?{" "}
           <span
-            className="text-cyan-400 cursor-pointer"
+            className="text-cyan-400 cursor-pointer hover:underline"
             onClick={() => navigate("/")}
           >
             Login
