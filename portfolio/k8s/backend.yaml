@@ -12,6 +12,10 @@ spec:
       labels:
         app: portfolio-backend
     spec:
+      # --- YAHAN ADD KAREIN ---
+      imagePullSecrets:
+        - name: regcred
+    spec:
       containers:
         - name: backend
           image: 2024dock/portfolio-backend:1.9
