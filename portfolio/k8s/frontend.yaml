@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 2024dock/portfolio-frontend:1.9
+          image: 2024dock/portfolio-frontend:2.0
           ports:
             - containerPort: 80
 ---
