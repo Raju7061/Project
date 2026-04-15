@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE = "/api"; // ✅ important for k8s ingress
+
 function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -19,10 +21,10 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -68,15 +70,16 @@ function Login() {
         <button className="w-full bg-cyan-500 py-2 rounded">
           Login
         </button>
+
         <p className="text-sm mt-3 text-center">
-  Don't have an account?{" "}
-  <span
-    className="text-cyan-400 cursor-pointer"
-    onClick={() => navigate("/signup")}
-  >
-    Sign Up
-  </span>
-</p>
+          Don't have an account?{" "}
+          <span
+            className="text-cyan-400 cursor-pointer"
+            onClick={() => navigate("/signup")}
+          >
+            Sign Up
+          </span>
+        </p>
       </form>
     </div>
   );

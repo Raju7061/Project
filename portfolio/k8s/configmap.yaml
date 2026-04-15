@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: backend-config
 data:
-  DB_HOST: host.minikube.internal
+  DB_HOST: 192.168.49.1
   DB_USER: postgres
   DB_NAME: portfolio
   DB_PORT: "5432"
