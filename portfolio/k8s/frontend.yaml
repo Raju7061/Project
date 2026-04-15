@@ -12,9 +12,12 @@ spec:
       labels:
         app: portfolio-frontend
     spec:
+      # Secret for Docker Hub private images
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: frontend
-          image: 2024dock/portfolio-frontend:3fbb6a5
+          image: 2024dock/portfolio-frontend:2.0
           ports:
             - containerPort: 80
 ---
