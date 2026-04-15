@@ -33,7 +33,7 @@ function Contact() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            className="w-full p-3 bg-white/20 rounded-lg outline-none text-white border border-transparent focus:border-cyan-500"
+            className="w-full p-3 bg-white/20 rounded-lg outline-none text-black border border-transparent focus:border-cyan-500"
             placeholder="Name"
             name="name"
             value={form.name}
@@ -41,7 +41,7 @@ function Contact() {
             required
           />
           <input
-            className="w-full p-3 bg-white/20 rounded-lg outline-none text-white border border-transparent focus:border-cyan-500"
+            className="w-full p-3 bg-white/20 rounded-lg outline-none text-black border border-transparent focus:border-cyan-500"
             placeholder="Email"
             name="email"
             type="email"
@@ -50,7 +50,7 @@ function Contact() {
             required
           />
           <textarea
-            className="w-full p-3 bg-white/20 rounded-lg outline-none text-white border border-transparent focus:border-cyan-500"
+            className="w-full p-3 bg-white/20 rounded-lg outline-none text-black border border-transparent focus:border-cyan-500"
             placeholder="Message"
             name="message"
             rows="4"
