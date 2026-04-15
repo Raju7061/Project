@@ -17,7 +17,7 @@ spec:
         - name: regcred
       containers:
         - name: frontend
-          image: 2024dock/portfolio-frontend:2.0
+          image: 2024dock/portfolio-frontend:39f7889
           ports:
             - containerPort: 80
 ---

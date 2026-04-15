@@ -17,7 +17,7 @@ spec:
         - name: regcred
       containers:
         - name: backend
-          image: 2024dock/portfolio-backend:7414b71
+          image: 2024dock/portfolio-backend:39f7889
           ports:
             - containerPort: 5000
           # Environment variables from ConfigMap and Secret
