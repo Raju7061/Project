@@ -12,15 +12,15 @@ spec:
       labels:
         app: portfolio-backend
     spec:
-      # --- YAHAN ADD KAREIN ---
+      # Docker Hub se image pull karne ke liye secret
       imagePullSecrets:
         - name: regcred
-    spec:
       containers:
         - name: backend
           image: 2024dock/portfolio-backend:3fbb6a5
           ports:
             - containerPort: 5000
+          # Environment variables from ConfigMap and Secret
           env:
             - name: DB_HOST
               valueFrom:
@@ -47,6 +47,7 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: DB_PASSWORD
+          # Health Checks
           readinessProbe:
             httpGet:
               path: /
