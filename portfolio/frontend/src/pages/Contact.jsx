@@ -29,7 +29,7 @@ function Contact() {
     <>
       <Navbar />
       <div className="max-w-lg mx-auto bg-white/10 p-8 rounded-2xl shadow-xl mt-8">
-        <h1 className="text-3xl font-bold mb-6 text-center text-white">Contact Me</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-white">Contact US</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input

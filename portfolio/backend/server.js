@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send({ error: 'Something went wrong on the server!' });
+  res.status(500).send({ error: 'Something went wrong on the server Sorry!' });
 });
 
 const PORT = process.env.PORT || 5000;
