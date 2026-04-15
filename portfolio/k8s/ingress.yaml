@@ -11,6 +11,22 @@ spec:
     - host: raju.local
       http:
         paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: portfolio-backend-service
+                port:
+                  number: 5000
+
+          - path: /uploads
+            pathType: Prefix
+            backend:
+              service:
+                name: portfolio-backend-service
+                port:
+                  number: 5000
+
           - path: /
             pathType: Prefix
             backend:
