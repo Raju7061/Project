@@ -1,5 +1,5 @@
 # GitHub Action isi globalTag ko update karegi (e.g., v24.106.0530)
-globalTag: "v24.106.0114"
+globalTag: "v24.106.0134"
 
 # Metadata for your services
 replicaCount: 1
