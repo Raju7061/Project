@@ -38,6 +38,7 @@ kafkaUi:
   replicaCount: 1
   image: docker.redpanda.com/redpandadata/console:latest
   service:
-    type: ClusterIP
+    type: NodePort
     port: 8080
+    nodePort: 30007
   kafkaBrokers: "host.minikube.internal:9092"
