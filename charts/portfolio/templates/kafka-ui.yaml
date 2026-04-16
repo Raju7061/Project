@@ -17,6 +17,7 @@ spec:
       containers:
         - name: kafka-ui
           image: {{ .Values.kafkaUi.image }}
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           env:
@@ -36,4 +37,7 @@ spec:
     - protocol: TCP
       port: {{ .Values.kafkaUi.service.port }}
       targetPort: 8080
+      {{- if eq .Values.kafkaUi.service.type "NodePort" }}
+      nodePort: {{ .Values.kafkaUi.service.nodePort }}
+      {{- end }}
 {{- end }}
