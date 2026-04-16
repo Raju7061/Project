@@ -1,0 +1,12 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: portfolio-app-ks
+  namespace: flux-system
+spec:
+  interval: 1m
+  path: "./clusters/minikube" # Ye folder jahan portfolio-hr.yaml rakhi hai
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
