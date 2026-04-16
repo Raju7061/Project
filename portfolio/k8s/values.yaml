@@ -1,0 +1,14 @@
+# GitHub Action isi globalTag ko update karegi (e.g., v24.106.0530)
+globalTag: "v24.0.0"
+
+# Metadata for your services
+replicaCount: 1
+
+# Service Ports (If you want to manage them from here)
+frontend:
+  port: 80
+  nodePort: 30080
+
+backend:
+  port: 5000
+  nodePort: 30050

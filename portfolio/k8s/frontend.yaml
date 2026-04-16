@@ -17,7 +17,7 @@ spec:
         - name: regcred
       containers:
         - name: frontend
-          image: 2024dock/portfolio-frontend:5de1040
+          image: 2024dock/portfolio-frontend:{{ .Values.globalTag }}
           ports:
             - containerPort: 80
 ---
