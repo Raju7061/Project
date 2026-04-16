@@ -1,27 +1,19 @@
-name: GitOps-CI-CD
+name: GitOps-Release-Flow
 
 on:
   push:
     branches: [ "main" ]
-    # Workflow tabhi chalega jab in folders mein change ho
     paths:
-      - 'portfolio/frontend/**'
-      - 'portfolio/backend/**'
-      - 'portfolio/k8s/**'
+      - 'portfolio/**'
 
 jobs:
-  build-and-deploy:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          # Isse Action ko repo mein wapas push karne ki permission milti hai
           token: ${{ secrets.GH_PAT }}
-
-      - name: Set Image Tag
-        id: vars
-        run: echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -29,31 +21,33 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 1. Build & Push Frontend
-      - name: Build and Push Frontend
+      # 1. Naya Semantic Version Tag generate karna (e.g., v24.106.0530)
+      - name: Generate Release Tag
+        id: tagger
         run: |
-          docker build -t 2024dock/portfolio-frontend:${{ steps.vars.outputs.tag }} ./portfolio/frontend
-          docker push 2024dock/portfolio-frontend:${{ steps.vars.outputs.tag }}
+          VERSION="v24.$(date +%j.%H%M)" 
+          echo "release_tag=$VERSION" >> $GITHUB_OUTPUT
 
-      # 2. Build & Push Backend
-      - name: Build and Push Backend
+      # 2. Build & Push BOTH Frontend and Backend with Global Tag
+      - name: Build and Push Images
         run: |
-          docker build -t 2024dock/portfolio-backend:${{ steps.vars.outputs.tag }} ./portfolio/backend
-          docker push 2024dock/portfolio-backend:${{ steps.vars.outputs.tag }}
+          # Frontend Build & Push
+          docker build -t 2024dock/portfolio-frontend:${{ steps.tagger.outputs.release_tag }} ./portfolio/frontend
+          docker push 2024dock/portfolio-frontend:${{ steps.tagger.outputs.release_tag }}
+          
+          # Backend Build & Push
+          docker build -t 2024dock/portfolio-backend:${{ steps.tagger.outputs.release_tag }} ./portfolio/backend
+          docker push 2024dock/portfolio-backend:${{ steps.tagger.outputs.release_tag }}
 
-      # 3. Update Kubernetes YAML Manifests (Plain YAML logic)
-      - name: Update Manifests
+      # 3. Update Helm Manifest (values.yaml)
+      - name: Update Global Tag in GitOps Repo
         run: |
           git config --global user.name "flux-bot"
           git config --global user.email "flux@raju.local"
           
-          # Frontend tag update: Purane tag ko naye commit SHA se replace karega
-          sed -i "s|image: 2024dock/portfolio-frontend:.*|image: 2024dock/portfolio-frontend:${{ steps.vars.outputs.tag }}|" portfolio/k8s/frontend.yaml
+          # Ensure file exists and update the tag
+          sed -i "s/globalTag: .*/globalTag: \"${{ steps.tagger.outputs.release_tag }}\"/" portfolio/k8s/values.yaml
           
-          # Backend tag update
-          sed -i "s|image: 2024dock/portfolio-backend:.*|image: 2024dock/portfolio-backend:${{ steps.vars.outputs.tag }}|" portfolio/k8s/backend.yaml
-          
-          # Changes ko commit aur push karna
-          git add portfolio/k8s/frontend.yaml portfolio/k8s/backend.yaml
-          git commit -m "chore: update image tags to ${{ steps.vars.outputs.tag }} [skip ci]"
+          git add portfolio/k8s/values.yaml
+          git commit -m "release: update global tag to ${{ steps.tagger.outputs.release_tag }} [skip ci]"
           git push

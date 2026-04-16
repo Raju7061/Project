@@ -1,0 +1,14 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: portfolio
+  namespace: raju
+spec:
+  interval: 1m
+  chart:
+    spec:
+      chart: ./portfolio/k8s
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
