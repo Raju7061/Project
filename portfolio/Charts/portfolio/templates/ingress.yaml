@@ -1,18 +1,21 @@
+{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: portfolio-ingress
+  namespace: {{ .Release.Namespace }}
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    # Hum rewrite-target ko hata rahe hain taaki poora path (/api/...) backend tak jaye
-    # Isse backend ko wahi path milega jo aapne server.js me define kiya hai
+    kubernetes.io/ingress.class: {{ .Values.ingress.className | quote }}
 spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- if .Values.ingress.tls.enabled }}
   tls:
     - hosts:
-        - raju.local
-      secretName: portfolio-tls
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Values.ingress.tls.secretName }}
+  {{- end }}
   rules:
-    - host: raju.local
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
           - path: /api
@@ -22,7 +25,6 @@ spec:
                 name: backend-service
                 port:
                   number: 5000
-
           - path: /uploads
             pathType: Prefix
             backend:
@@ -30,7 +32,6 @@ spec:
                 name: backend-service
                 port:
                   number: 5000
-
           - path: /
             pathType: Prefix
             backend:
@@ -38,3 +39,4 @@ spec:
                 name: portfolio-frontend-service
                 port:
                   number: 80
+{{- end }}

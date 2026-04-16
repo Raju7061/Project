@@ -1,0 +1,43 @@
+globalTag: latest
+
+imagePullSecrets: []
+
+backend:
+  replicaCount: 2
+  image:
+    repository: 2024dock/portfolio-backend
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 5000
+  config:
+    DB_HOST: "192.168.49.1"
+    DB_USER: "postgres"
+    DB_NAME: "portfolio"
+    DB_PORT: "5432"
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: 2024dock/portfolio-frontend
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 80
+
+ingress:
+  enabled: true
+  className: nginx
+  host: raju.local
+  tls:
+    enabled: true
+    secretName: portfolio-tls
+
+kafkaUi:
+  enabled: true
+  replicaCount: 1
+  image: docker.redpanda.com/redpandadata/console:latest
+  service:
+    type: ClusterIP
+    port: 8080
+  kafkaBrokers: "host.minikube.internal:9092"
