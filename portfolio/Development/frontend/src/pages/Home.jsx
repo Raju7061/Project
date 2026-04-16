@@ -11,7 +11,7 @@ function Home() {
       </h1>
 
       <p className="text-xl opacity-80 mb-6">
-        SRE Engineer • MERN Stack Developer • DevOps Enthusiast
+        SRE Engineer • MERN Stack Developer • DevOps
       </p>
 
       <a
