@@ -14,7 +14,7 @@ function Projects() {
     <>
       <Navbar />
           <div>
-      <h1 className="text-4xl font-bold mb-6">My Projects</h1>
+      <h1 className="text-4xl font-bold mb-6">My Projects is Ready for production</h1>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects.map((p, i) => (
