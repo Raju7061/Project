@@ -1,10 +1,11 @@
+{{- if .Values.kafkaUi.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kafka-ui
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.kafkaUi.replicaCount }}
   selector:
     matchLabels:
       app: kafka-ui
@@ -15,24 +16,28 @@ spec:
     spec:
       containers:
         - name: kafka-ui
-          image: docker.redpanda.com/redpandadata/console:latest
+          image: {{ .Values.kafkaUi.image }}
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           env:
             - name: KAFKA_BROKERS
-              value: "host.minikube.internal:9092"
+              value: {{ .Values.kafkaUi.kafkaBrokers | quote }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: kafka-ui
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
-  type: NodePort
+  type: {{ .Values.kafkaUi.service.type }}
   selector:
     app: kafka-ui
   ports:
     - protocol: TCP
-      port: 8080
+      port: {{ .Values.kafkaUi.service.port }}
       targetPort: 8080
-      nodePort: 30007
+      {{- if eq .Values.kafkaUi.service.type "NodePort" }}
+      nodePort: {{ .Values.kafkaUi.service.nodePort }}
+      {{- end }}
+{{- end }}
