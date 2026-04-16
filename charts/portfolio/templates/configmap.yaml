@@ -4,7 +4,7 @@ metadata:
   name: backend-config
   namespace: {{ .Release.Namespace }}
 data:
-  DB_HOST: {{ .Values.backend.config.DB_HOST | quote }}
-  DB_USER: {{ .Values.backend.config.DB_USER | quote }}
-  DB_NAME: {{ .Values.backend.config.DB_NAME | quote }}
-  DB_PORT: {{ .Values.backend.config.DB_PORT | quote }}
+  DB_HOST: "192.168.49.1"
+  DB_USER: "postgres"
+  DB_NAME: "portfolio"
+  DB_PORT: "5432"
