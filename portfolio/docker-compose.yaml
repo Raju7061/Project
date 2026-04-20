@@ -20,12 +20,11 @@ services:
     depends_on:
       - zookeeper
     ports:
-      - "9092:9092"   # For your local machine
-      - "29092:29092" # For internal docker communication
+      - "9092:9092"   # External access (localhost:9092)
+      - "29092:29092" # Internal Docker access
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: portfolio-zookeeper:2181
-      # LISTENERS configuration fixed for Dual Access
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://portfolio-kafka:29092,EXTERNAL://localhost:9092
@@ -71,7 +70,6 @@ services:
       - ./kafka-connect-es:/kafka/connect-extra
     restart: unless-stopped
 
-  # ADDED: Redpanda Console (Kowl) to view your topics
   redpanda-console:
     image: docker.redpanda.com/redpandadata/console:latest
     container_name: redpanda-console
