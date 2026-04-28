@@ -6,6 +6,7 @@ import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 import ProtectedRoute from "./ProtectedRoute";
+import Messages from "./pages/Messages";
 
 function App() {
   return (
@@ -43,6 +44,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Contact />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Messages"
+          element={
+            <ProtectedRoute>
+              <Messages />
             </ProtectedRoute>
           }
         />
