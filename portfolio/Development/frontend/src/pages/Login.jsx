@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Kyunki ab hum pods use  kar rahe, isliye  ye address dena hoga
-// u
-const API_BASE = "/api/auth" ;  
-
-//const API_BASE = "http://localhost:5000/api/auth";   local pe chalane ke lie use this mins 
+// Using relative path for Pods/Nginx ingress, or localhost for local dev
+const API_BASE = "/api/auth"; 
 
 function Login() {
   const navigate = useNavigate();
@@ -23,18 +20,14 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
       const res = await fetch(API_BASE + "/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
-
       if (!res.ok) {
         alert(data.error || "Login failed");
         return;
@@ -42,45 +35,54 @@ function Login() {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-
       navigate("/home");
     } catch (err) {
       console.error("Connection Error:", err);
-      alert("Cannot connect to server. Check if backend is running on port 5000.");
+      alert("Cannot connect to server. Check your API configuration.");
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-black text-white">
-      <form onSubmit={handleLogin} className="bg-gray-800 p-6 rounded w-80 shadow-lg">
-        <h2 className="text-2xl mb-4 text-center font-bold text-cyan-400">Login</h2>
+    /* Background color set to #43FAC6 using Tailwind arbitrary value */
+    <div className="flex justify-center items-center h-screen bg-[#43FAC6]">
+      <form onSubmit={handleLogin} className="bg-white p-8 rounded-xl w-96 shadow-2xl">
+        <h2 className="text-3xl mb-6 text-center font-bold text-gray-800">Login</h2>
 
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          className="w-full p-2 mb-3 text-black rounded outline-none"
-          onChange={handleChange}
-          required
-        />
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#43FAC6] outline-none text-black"
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className="w-full p-2 mb-4 text-black rounded outline-none"
-          onChange={handleChange}
-          required
-        />
+        <div className="mb-6">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#43FAC6] outline-none text-black"
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <button type="submit" className="w-full bg-cyan-500 py-2 rounded font-bold hover:bg-cyan-600 transition">
-          Login
+        <button 
+          type="submit" 
+          className="w-full bg-[#2dd4bf] text-white py-3 rounded-lg font-bold hover:bg-[#14b8a6] transition-all shadow-md"
+        >
+          Sign In
         </button>
 
-        <p className="text-sm mt-3 text-center">
+        <p className="text-sm mt-5 text-center text-gray-600">
           Don't have an account?{" "}
           <span
-            className="text-cyan-400 cursor-pointer hover:underline"
+            className="text-[#14b8a6] font-bold cursor-pointer hover:underline"
             onClick={() => navigate("/signup")}
           >
             Sign Up
