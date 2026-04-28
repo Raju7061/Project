@@ -20,8 +20,8 @@ services:
     depends_on:
       - zookeeper
     ports:
-      - "9092:9092"   # External access (localhost:9092)
-      - "29092:29092" # Internal Docker access
+      - "9092:9092"
+      - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: portfolio-zookeeper:2181
@@ -38,7 +38,10 @@ services:
     restart: unless-stopped
 
   debezium:
-    image: debezium/connect:2.5
+    image: custom-debezium-connect:2.5
+    build:
+      context: .
+      dockerfile: Dockerfile-connect
     container_name: portfolio-debezium
     depends_on:
       - kafka
@@ -62,24 +65,9 @@ services:
       INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       KEY_CONVERTER_SCHEMAS_ENABLE: "true"
       VALUE_CONVERTER_SCHEMAS_ENABLE: "true"
-      INTERNAL_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
-      INTERNAL_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
-      CONNECT_PLUGIN_PATH: /kafka/connect,/kafka/connect-extra
+      CONNECT_PLUGIN_PATH: /kafka/connect,/usr/share/confluent-hub-components
       REST_ADVERTISED_HOST_NAME: portfolio-debezium
-    volumes:
-      - ./kafka-connect-es:/kafka/connect-extra
     restart: unless-stopped
-
-  redpanda-console:
-    image: docker.redpanda.com/redpandadata/console:latest
-    container_name: redpanda-console
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-    environment:
-      KAFKA_BROKERS: portfolio-kafka:29092
-    depends_on:
-      - kafka
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
@@ -102,6 +90,16 @@ services:
     ports:
       - "5601:5601"
     restart: unless-stopped
+
+  redpanda-console:
+    image: docker.redpanda.com/redpandadata/console:latest
+    container_name: redpanda-console
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_BROKERS: portfolio-kafka:29092
+    depends_on:
+      - kafka
 
 volumes:
   zookeeper_data:

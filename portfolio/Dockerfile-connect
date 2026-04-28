@@ -1,0 +1,20 @@
+FROM debezium/connect:2.5
+
+USER root
+
+# Install unzip using the native package manager (microdnf for Red Hat based images)
+RUN microdnf install -y unzip
+
+# Create the directory where Kafka Connect looks for external plugins
+RUN mkdir -p /usr/share/confluent-hub-components
+
+# COPY the local zip file from your laptop into the container image
+# Make sure this matches the path where you moved the file earlier
+COPY kafka-connect-es/es-sink.zip /tmp/es-sink.zip
+
+# Unzip the plugin into the components directory and remove the zip to keep the image small
+RUN unzip /tmp/es-sink.zip -d /usr/share/confluent-hub-components && \
+    rm /tmp/es-sink.zip
+
+# Switch back to the 'kafka' user for security
+USER kafka
