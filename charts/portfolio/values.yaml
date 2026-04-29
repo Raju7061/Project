@@ -3,7 +3,7 @@ globalTag: latest
 imagePullSecrets: []
 
 backend:
-  replicaCount: 2
+  replicaCount: 1
   image:
     repository: 2024dock/portfolio-backend
     pullPolicy: IfNotPresent
