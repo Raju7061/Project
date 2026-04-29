@@ -2,5 +2,5 @@ apiVersion: v2
 name: portfolio
 description: Portfolio application
 type: application
-version: v26.100.5
-appVersion: "v26.100.5"
+version: v26.100.6
+appVersion: "v26.100.6"
