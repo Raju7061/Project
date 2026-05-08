@@ -7,6 +7,8 @@ function Messages() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // K8s/Ingress default: /api/messages
+  // Local .env: REACT_APP_API_URL_MESSAGES=http://localhost:5000/api/messages
   const API_URL = process.env.REACT_APP_API_URL_MESSAGES || "/api/messages";
 
   useEffect(() => {
@@ -15,14 +17,27 @@ function Messages() {
         setLoading(true);
         setError("");
 
-        const res = await axios.get(API_URL);
+        console.log("Messages API URL:", API_URL);
 
-        setMessages(Array.isArray(res.data) ? res.data : []);
+        const res = await axios.get(API_URL, {
+          timeout: 10000,
+        });
+
+        if (Array.isArray(res.data)) {
+          setMessages(res.data);
+        } else if (Array.isArray(res.data?.data)) {
+          setMessages(res.data.data);
+        } else if (Array.isArray(res.data?.messages)) {
+          setMessages(res.data.messages);
+        } else {
+          setMessages([]);
+        }
       } catch (err) {
         console.error("Error fetching messages:", err);
 
         setError(
           err.response?.data?.error ||
+            err.response?.data?.message ||
             "Unable to load messages. Please check backend, ingress, or Elasticsearch."
         );
       } finally {
