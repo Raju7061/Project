@@ -22,7 +22,7 @@ spec:
     remediation:
       retries: 3
   values:
-    globalTag: "v26.100.8"
+    globalTag: "v26.100.9"
     imagePullSecrets:
       - regcred
     backend:
